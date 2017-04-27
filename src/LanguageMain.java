@@ -30,17 +30,17 @@ public class LanguageMain {
 
 				System.out.println("############Program Output############");
 
-				long startTime = System.nanoTime();
+				long startTime = System.currentTimeMillis();
 
 				LanguageVisitor visit = new LanguageVisitor();
 				Evaluator mainReturn = visit.visit(parser.program());
 
-				long execTime = System.nanoTime() - startTime;
+				long execTime = System.currentTimeMillis() - startTime;
 				System.out.println("######################################\n");
 				if (mainReturn != null) {
 					System.out.printf("Program Returned: " + mainReturn.getObject() + "\n");
 				}
-				System.out.printf("Program Execution Time: %.6fns\n", execTime * 0.000000001);
+				System.out.printf("Program Execution Time: %.6fs\n", execTime * 0.001);
 				System.out.printf("Program Instruction Count: %d\n", instCount);
 
 			} catch (IOException e) {
