@@ -83,6 +83,7 @@ func reverse(list) do
 	return newlist;
 end
 
+#Returns true if array is empty
 func empty(list) do
 	return length(list) == 0;
 end

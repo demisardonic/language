@@ -23,6 +23,7 @@ public class LanguageMain {
 		ANTLRInputStream input;
 		while (repeat) {
 			try {
+				instCount = 0;
 				// Pulls file from given path.
 				input = new ANTLRInputStream(new FileInputStream(path));
 				ComS319LanguageLexer lexer = new ComS319LanguageLexer(input);
@@ -51,7 +52,7 @@ public class LanguageMain {
 					if (mainReturn != null) {
 						System.out.printf("Program Returned: " + (int) mainReturn.getNumber() + "\n");
 					} else {
-						System.out.printf("Program missing main function.");
+						System.out.printf("Program Returned: 0\n");
 					}
 					System.out.printf("Program Execution Time: %.6fs\n", execTime * 0.001);
 					System.out.printf("Program Instruction Count: %d\n", instCount);
