@@ -2375,8 +2375,8 @@ public class ComS319LanguageParser extends Parser {
 		public TerminalNode Func() { return getToken(ComS319LanguageParser.Func, 0); }
 		public TerminalNode Variable() { return getToken(ComS319LanguageParser.Variable, 0); }
 		public TerminalNode Do() { return getToken(ComS319LanguageParser.Do, 0); }
-		public FuncBodyContext funcBody() {
-			return getRuleContext(FuncBodyContext.class,0);
+		public CodeContext code() {
+			return getRuleContext(CodeContext.class,0);
 		}
 		public TerminalNode End() { return getToken(ComS319LanguageParser.End, 0); }
 		public List<ParamContext> param() {
@@ -2436,7 +2436,7 @@ public class ComS319LanguageParser extends Parser {
 			setState(283);
 			match(Do);
 			setState(284);
-			funcBody();
+			code();
 			setState(285);
 			match(End);
 			}
@@ -2951,7 +2951,7 @@ public class ComS319LanguageParser extends Parser {
 		"\2\2\u0112#\3\2\2\2\u0113\u0114\7\16\2\2\u0114\u0115\7%\2\2\u0115\u0119"+
 		"\7\5\2\2\u0116\u0118\5(\25\2\u0117\u0116\3\2\2\2\u0118\u011b\3\2\2\2\u0119"+
 		"\u0117\3\2\2\2\u0119\u011a\3\2\2\2\u011a\u011c\3\2\2\2\u011b\u0119\3\2"+
-		"\2\2\u011c\u011d\7\6\2\2\u011d\u011e\7\t\2\2\u011e\u011f\5,\27\2\u011f"+
+		"\2\2\u011c\u011d\7\6\2\2\u011d\u011e\7\t\2\2\u011e\u011f\5\4\3\2\u011f"+
 		"\u0120\7\n\2\2\u0120%\3\2\2\2\u0121\u0122\7%\2\2\u0122\u0126\7\5\2\2\u0123"+
 		"\u0125\5(\25\2\u0124\u0123\3\2\2\2\u0125\u0128\3\2\2\2\u0126\u0124\3\2"+
 		"\2\2\u0126\u0127\3\2\2\2\u0127\u0129\3\2\2\2\u0128\u0126\3\2\2\2\u0129"+

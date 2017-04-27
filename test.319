@@ -1,0 +1,7 @@
+func test(n) do
+	if n == 0 do
+		return 1;
+	end
+	return 0;
+end
+print test(0);

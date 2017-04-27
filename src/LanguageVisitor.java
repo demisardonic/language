@@ -58,26 +58,25 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			value = visit(ctx.stringExpr());
 			env.setVar(ctx.Variable().getText(), value);
 		}
-		return value;
+		return null;
 	}
 
 	@Override
 	public Evaluator visitIfPartement(ComS319LanguageParser.IfPartementContext ctx) {
 		Evaluator value = visit(ctx.ifPart().boolExpr());
 		if (value.isBool() && value.getBool()) {
-			visit(ctx.ifPart());
-			return null;
+			return visit(ctx.ifPart());
 		}
 
 		for (int i = 0; i < ctx.elseIfPart().size(); i++) {
 			value = visit(ctx.elseIfPart(i).boolExpr());
 			if (value.isBool() && value.getBool()) {
-				visit(ctx.elseIfPart(i));
-				return null;
+				
+				return visit(ctx.elseIfPart(i));
 			}
 		}
 		if (ctx.elsePart() != null) {
-			visit(ctx.elsePart());
+			return visit(ctx.elsePart());
 		}
 		return null;
 	}
@@ -468,7 +467,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		for (int i = 0; i < ctx.param().size(); i++) {
 			paramNames.add(ctx.param(i).getText());
 		}
-		env.defFunc(functionName, new Function(ctx.funcBody(), paramNames));
+		env.defFunc(functionName, new Function(ctx.code(), paramNames));
 		return null;
 	}
 
@@ -483,7 +482,8 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.param(i)));
 			// funcVisitor.visit(ctx.param(i));
 		}
-		return f.visit(funcVisitor);
+		f.visit(funcVisitor);
+		return null;
 	}
 
 	@Override

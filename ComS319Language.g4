@@ -115,7 +115,7 @@ forLoop:
 	;
 	
 funcDef:
-	Func Variable '(' param* ')' Do funcBody End
+	Func Variable '(' param* ')' Do code End
 	;
 
 funcApply:
