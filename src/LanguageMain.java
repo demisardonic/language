@@ -53,7 +53,7 @@ public class LanguageMain {
 				System.out.printf("Program Instruction Count: %d\n", instCount);
 
 			} catch (IOException e) {
-				e.printStackTrace();
+				System.err.println("File \""+ path +"\" does not exist.");
 			}
 			System.out.println("\nEnter path to source file now. Enter \"exit\" to terminate.");
 			path = scanner.nextLine();
