@@ -1,17 +1,16 @@
 grammar ComS319Language;
 
 program
- : code
+ : funcDef+
  ;
 
-code
- : statement*
- ;
+code:
+	statement*
+	;
 
 statement
 	: assignment ';'
 	| funcReturn ';'
-	| funcDef
 	| funcApply ';'
 	| varInc ';'
 	| varDec ';'
@@ -134,15 +133,6 @@ funcReturn:
 	Return expr
 	| Return boolExpr
 	| Return stringExpr
-	;
-	
-funcBody
- : funcStatement*
- ;
-
-funcStatement
-	: statement
-	| funcReturn ';'
 	;
 	
 If : 'if';

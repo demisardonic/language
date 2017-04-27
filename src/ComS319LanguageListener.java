@@ -608,24 +608,4 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ComS319LanguageParser#funcBody}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncBody(ComS319LanguageParser.FuncBodyContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ComS319LanguageParser#funcBody}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncBody(ComS319LanguageParser.FuncBodyContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link ComS319LanguageParser#funcStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterFuncStatement(ComS319LanguageParser.FuncStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link ComS319LanguageParser#funcStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitFuncStatement(ComS319LanguageParser.FuncStatementContext ctx);
 }

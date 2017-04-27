@@ -1,4 +1,7 @@
-
+/**
+ * Enum represents the different types of variables.
+ *
+ */
 public enum Type {
 	NUMBER("number"), BOOL("boolean"), STRING("string");
 

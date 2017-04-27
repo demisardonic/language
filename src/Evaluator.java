@@ -1,4 +1,8 @@
-
+/**
+ * Stores the values of Language statments. types include booleans, numbers, and
+ * strings.
+ *
+ */
 public class Evaluator {
 	private Object var;
 	private Type type;

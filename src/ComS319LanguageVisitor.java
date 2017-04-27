@@ -363,16 +363,4 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ComS319LanguageParser#funcBody}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncBody(ComS319LanguageParser.FuncBodyContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link ComS319LanguageParser#funcStatement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitFuncStatement(ComS319LanguageParser.FuncStatementContext ctx);
 }

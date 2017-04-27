@@ -646,30 +646,6 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncBody(ComS319LanguageParser.FuncBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncBody(ComS319LanguageParser.FuncBodyContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFuncStatement(ComS319LanguageParser.FuncStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFuncStatement(ComS319LanguageParser.FuncStatementContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -1,5 +1,9 @@
 import java.util.HashMap;
 
+/**
+ * Stores the program environment variables, functions, and main function.
+ *
+ */
 public class Program {
 	private HashMap<String, Evaluator> vars;
 	private HashMap<String, Function> func;

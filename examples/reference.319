@@ -1,0 +1,17 @@
+func main() do
+	i = 0;
+	inc(i);
+	print i;
+	
+	i = inc2(i);
+	print i;
+
+end
+
+func inc(n) do
+	n = n + 1;
+end
+
+func inc2(n) do
+	return n + 1;
+end
