@@ -1,0 +1,6 @@
+if true do
+	i = 2;
+	return 0;
+	i = 1;
+end
+print i;
