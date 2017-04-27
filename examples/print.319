@@ -1,10 +1,12 @@
-print 1;
-print 2.2;
-print -45;
-
-print true;
-print false;
-
-print "not true";
-print "";
-print "hello world!";
+func main() do
+	print 1;
+	print 2.2;
+	print -45;
+	
+	print true;
+	print false;
+	
+	print "not true";
+	print "";
+	print "hello world!";
+end

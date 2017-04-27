@@ -1,8 +1,6 @@
 
 import java.util.ArrayList;
 
-import javax.management.RuntimeErrorException;
-
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 
@@ -568,7 +566,6 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.funcApply().param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.funcApply().param(i)));
-			// funcVisitor.visit(ctx.param(i));
 		}
 		return f.visit(funcVisitor);
 	}
@@ -585,7 +582,6 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.funcApply().param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.funcApply().param(i)));
-			// funcVisitor.visit(ctx.param(i));
 		}
 		return f.visit(funcVisitor);
 	}
