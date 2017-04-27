@@ -1,0 +1,54 @@
+import "examples/libs/arraylib.319";
+
+func main() do
+	print "array n";
+	n = [1,3,6,8];
+	print n;
+	print "array m";
+	m = [2,3,5,10];
+	print m;
+	print "n and m mergesorted";
+	merged = merge(n m);
+	print merged;
+end
+
+func mergesort(list) do
+	if length(list) <= 1 do
+		return list;
+	end
+	
+	left = split(list true);
+	right = split(list false);
+	
+	left = mergesort(left);
+	right = mergesort(right);
+	
+	return merge(left right);
+end
+
+
+func merge(left right) do
+	result = [];
+	
+	while !empty(left) && !empty(right) do
+		if left[0] <= right[0] do
+			result = result + left[0];
+			left = sub(left 1 length(left));
+		else do
+			result = result + right[0];
+			right = sub(right 1 length(right));
+		end
+	end
+	
+	while !empty(left) do
+		result = result + left[0];
+		left = sub(left 1 length(left));
+	end
+	
+	while !empty(right) do
+		result = result + right[0];
+		right = sub(right 1 length(right));
+	end
+	
+	return result;
+end

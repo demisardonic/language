@@ -1,0 +1,88 @@
+#insert val into list array at index, returns the new array
+func insert(list val index) do
+	ret = [];
+	for i = 0; i < length(list); i++ do
+		if i != index do
+			ret = ret + list[i];
+			print i;
+		end
+	end
+	ret = ret + val;
+	for i = i; i < length(list)+1; i++ do
+		ret = ret + list[i-1];
+	end
+	
+	return ret;
+end
+
+#return true if list holds val, false otherwise
+func has(list val) do
+	for i = 0; i < length(list); i++ do
+		if list[i] == val do
+			return true;
+		end
+	end
+	return false;
+end
+
+#returns the index of val in list, -1 if val does not exist in list
+func indexOf(list val) do
+	for i = 0; i < length(list); i++ do
+		if list[i] == val do
+			return i;
+		end
+	end
+	return -1;
+end
+
+#returns an array with indices n and m swapped
+func swap(list n m) do
+	newlist = [];
+	for index = 0; index < length(list); index++ do
+		if index == n do
+			newlist = newlist + list[m];
+		else if index == m do
+			newlist = newlist + list[n];
+		else do
+			newlist = newlist + list[index];
+		end
+	end
+	return newlist;
+end
+
+#splits the list in half, left half if side=true, right half if side=false
+func split(list side) do 
+	newlist = [];
+	if side do
+		for i = 0; i < length(list)/2; i++ do
+			newlist = newlist + list[i];
+		end
+	else do
+		for i = length(list)/2; i < length(list); i++ do
+			newlist = newlist + list[i];
+		end
+	end
+	return newlist;
+end
+
+#returns the sub array from index n to index m
+func sub(list n m) do
+	newlist = [];
+	for i = n; i < m; i++ do
+		newlist = newlist + list[i];
+	end
+	return newlist;
+end
+
+#returns the list in reverse order
+func reverse(list) do
+	newlist = [];
+	for i = length(list)-1; i >= 0; i-- do
+		newlist = newlist + list[i];
+	end
+	return newlist;
+end
+
+func empty(list) do
+	return length(list) == 0;
+end

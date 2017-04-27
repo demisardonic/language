@@ -107,6 +107,18 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 */
 	void exitElsePart(ComS319LanguageParser.ElsePartContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code arrayExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayExpr(ComS319LanguageParser.ArrayExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrayExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayExpr(ComS319LanguageParser.ArrayExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code modExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
 	 * @param ctx the parse tree
@@ -130,6 +142,18 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitIncExpr(ComS319LanguageParser.IncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code floorExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFloorExpr(ComS319LanguageParser.FloorExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code floorExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFloorExpr(ComS319LanguageParser.FloorExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code innerExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
@@ -214,6 +238,18 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitVarIncExpr(ComS319LanguageParser.VarIncExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arrayLength}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayLength(ComS319LanguageParser.ArrayLengthContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrayLength}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayLength(ComS319LanguageParser.ArrayLengthContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varDecExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
@@ -549,6 +585,16 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 */
 	void exitPrint(ComS319LanguageParser.PrintContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ComS319LanguageParser#length}.
+	 * @param ctx the parse tree
+	 */
+	void enterLength(ComS319LanguageParser.LengthContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ComS319LanguageParser#length}.
+	 * @param ctx the parse tree
+	 */
+	void exitLength(ComS319LanguageParser.LengthContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ComS319LanguageParser#whileLoop}.
 	 * @param ctx the parse tree
 	 */
@@ -608,4 +654,34 @@ public interface ComS319LanguageListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ComS319LanguageParser#importStatment}.
+	 * @param ctx the parse tree
+	 */
+	void enterImportStatment(ComS319LanguageParser.ImportStatmentContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ComS319LanguageParser#importStatment}.
+	 * @param ctx the parse tree
+	 */
+	void exitImportStatment(ComS319LanguageParser.ImportStatmentContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ComS319LanguageParser#arrayDec}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayDec(ComS319LanguageParser.ArrayDecContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ComS319LanguageParser#arrayDec}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayDec(ComS319LanguageParser.ArrayDecContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ComS319LanguageParser#arrayIndex}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ComS319LanguageParser#arrayIndex}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx);
 }

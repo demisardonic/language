@@ -70,6 +70,13 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitElsePart(ComS319LanguageParser.ElsePartContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code arrayExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayExpr(ComS319LanguageParser.ArrayExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code modExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
 	 * @param ctx the parse tree
@@ -83,6 +90,13 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitIncExpr(ComS319LanguageParser.IncExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code floorExpr}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitFloorExpr(ComS319LanguageParser.FloorExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code innerExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
@@ -132,6 +146,13 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitVarIncExpr(ComS319LanguageParser.VarIncExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code arrayLength}
+	 * labeled alternative in {@link ComS319LanguageParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayLength(ComS319LanguageParser.ArrayLengthContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code varDecExpr}
 	 * labeled alternative in {@link ComS319LanguageParser#expr}.
@@ -328,6 +349,12 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPrint(ComS319LanguageParser.PrintContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link ComS319LanguageParser#length}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLength(ComS319LanguageParser.LengthContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link ComS319LanguageParser#whileLoop}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -363,4 +390,22 @@ public interface ComS319LanguageVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ComS319LanguageParser#importStatment}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImportStatment(ComS319LanguageParser.ImportStatmentContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ComS319LanguageParser#arrayDec}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayDec(ComS319LanguageParser.ArrayDecContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link ComS319LanguageParser#arrayIndex}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx);
 }

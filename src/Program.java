@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -8,11 +9,13 @@ public class Program {
 	private HashMap<String, Evaluator> vars;
 	private HashMap<String, Function> func;
 	private Function main;
+	private ArrayList<String> imports;
 
 	public Program() {
 		vars = new HashMap<String, Evaluator>();
 		func = new HashMap<String, Function>();
 		main = null;
+		imports = new ArrayList<String>();
 	}
 
 	public Program(Program env) {
@@ -42,6 +45,14 @@ public class Program {
 
 	public Function getMain() {
 		return main;
+	}
+	
+	public boolean addImport(String path){
+		if(!imports.contains(path)){
+			imports.add(path);
+			return true;
+		}
+		return false;
 	}
 
 }

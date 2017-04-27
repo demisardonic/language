@@ -1,8 +1,13 @@
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.TerminalNodeImpl;
 
 /**
  * Tree walking object which steps through the source code of the program and
@@ -18,6 +23,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	/**
 	 * Creates a Visitor with a give program environment
+	 * 
 	 * @param env
 	 */
 	public LanguageVisitor(Program env) {
@@ -36,13 +42,11 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	 * the main function.
 	 */
 	public Evaluator visitProgram(ComS319LanguageParser.ProgramContext ctx) {
-		// Initial program instruction count
-		LanguageMain.instCount = 0;
 		// Define every function in the program
 		visitChildren(ctx);
 		// Throw exception if main function does not exist
 		if (env.getMain() == null) {
-			throw new RuntimeException("Program is missing a main function.");
+			return null;
 		}
 		// Execute main function
 		return env.getMain().visit(this);
@@ -76,7 +80,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			Evaluator val = visit(ctx.getChild(0));
 			return val;
 		} catch (RuntimeException e) {
-			System.err.println("Error on statement: " + ctx.getText() + " : " + e.getMessage());
+			System.out.println("Error on statement: " + ctx.getText() + " : " + e.getMessage());
 		}
 		return null;
 	}
@@ -89,14 +93,16 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		Evaluator value = null;
 		if (ctx.expr() != null) {
 			value = visit(ctx.expr());
-			env.setVar(ctx.Variable().getText(), value);
 		} else if (ctx.boolExpr() != null) {
 			value = visit(ctx.boolExpr());
-			env.setVar(ctx.Variable().getText(), value);
 		} else if (ctx.stringExpr() != null) {
 			value = visit(ctx.stringExpr());
-			env.setVar(ctx.Variable().getText(), value);
+		} else if (ctx.arrayDec() != null) {
+			value = visit(ctx.arrayDec());
+		} else {
+			return null;
 		}
+		env.setVar(ctx.Variable().getText(), value);
 		return null;
 	}
 
@@ -170,6 +176,14 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			return new Evaluator(op1.getString() + op2.getNumber());
 		} else if (op1.isNumber() && op2.isString()) {
 			return new Evaluator(op1.getNumber() + op2.getString());
+		} else if (op1.isArray() && op2.isArray()) {
+			ArrayList<Evaluator> newArray = new ArrayList<Evaluator>(op1.getArray());
+			newArray.addAll(op2.getArray());
+			return new Evaluator(newArray);
+		} else if (op1.isArray()) {
+			ArrayList<Evaluator> newArray = new ArrayList<Evaluator>(op1.getArray());
+			newArray.add(op2);
+			return new Evaluator(newArray);
 		} else {
 			throw new RuntimeException("Addition cannot be done between type " + op1.getType() + " and " + op2.getType());
 		}
@@ -442,6 +456,19 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		} else if (ctx.stringExpr() != null) {
 			value = visit(ctx.stringExpr());
 		}
+		if (value.isArray()) {
+			ArrayList<Evaluator> list = value.getArray();
+			String str = "[";
+			if (list.size() > 0) {
+				str += list.get(0).getObject();
+				for (int i = 1; i < list.size(); i++) {
+					str += "," + list.get(i).getObject();
+				}
+			}
+			str += "]";
+			System.out.println(str);
+			return null;
+		}
 		System.out.println(value.getObject());
 		return null;
 	}
@@ -450,11 +477,20 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	 * Returns the value within a variable
 	 */
 	public Evaluator visitVarExpr(ComS319LanguageParser.VarExprContext ctx) {
-		Evaluator value = env.getVar(ctx.getText());
-		if (value == null) {
-			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		if (ctx.arrayIndex() == null) {
+			Evaluator value = env.getVar(ctx.getText());
+			if (value == null) {
+				throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+			}
+			return value;
+		} else {
+			Evaluator value = env.getVar(ctx.Variable().getText());
+			if (value == null) {
+				throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+			}
+			Evaluator index = visit(ctx.arrayIndex());
+			return value.getArrayIndex((int) index.getNumber());
 		}
-		return value;
 	}
 
 	/**
@@ -513,7 +549,10 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	public Evaluator visitWhileLoop(ComS319LanguageParser.WhileLoopContext ctx) {
 		ParseTree block = ctx.code();
 		while (visit(ctx.boolExpr()).getBool()) {
-			visit(block);
+			Evaluator retVal = visit(block);
+			if (retVal != null) {
+				return retVal;
+			}
 		}
 		return null;
 	}
@@ -534,7 +573,10 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 				incState = ctx.expr();
 			}
 			while (visit(ctx.boolExpr()).getBool()) {
-				visit(block);
+				Evaluator retVal = visit(block);
+				if (retVal != null) {
+					return retVal;
+				}
 				visit(incState);
 			}
 		}
@@ -740,5 +782,85 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			return visit(ctx.stringExpr());
 		else
 			return null;
+	}
+
+	/**
+	 * Imports all functions from the given file. Ignores duplicate imports.
+	 */
+	public Evaluator visitImportStatment(ComS319LanguageParser.ImportStatmentContext ctx) {
+		String path = ctx.Path().getText();
+		if (env.addImport(path)) {
+			ANTLRInputStream input;
+			try {
+				input = new ANTLRInputStream(new FileInputStream(path.substring(1, path.length() - 1)));
+			} catch (IOException e) {
+				throw new RuntimeException("Import path " + path + " does not exist.");
+			}
+			ComS319LanguageLexer lexer = new ComS319LanguageLexer(input);
+			CommonTokenStream tokens = new CommonTokenStream(lexer);
+			ComS319LanguageParser parser = new ComS319LanguageParser(tokens);
+			visit(parser.program());
+		} else {
+			System.out.println("Duplicate Import : " + path);
+		}
+		return null;
+	}
+
+	/**
+	 * Declares a variable as an array.
+	 */
+	public Evaluator visitArrayDec(ComS319LanguageParser.ArrayDecContext ctx) {
+		ArrayList<Evaluator> list = new ArrayList<Evaluator>();
+		Evaluator value = null;
+		for (ParseTree expr : ctx.children) {
+			if (expr instanceof TerminalNodeImpl) {
+				continue;
+			}
+			value = visit(expr);
+			list.add(value);
+		}
+		return new Evaluator(list);
+	}
+
+	/**
+	 * Returns the expression with [] after array variable
+	 */
+	public Evaluator visitArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx) {
+		Evaluator index = visit(ctx.expr());
+		return index;
+	}
+
+	/**
+	 * Returns the length of array
+	 */
+	public Evaluator visitLength(ComS319LanguageParser.LengthContext ctx) {
+		Evaluator array = visit(ctx.Variable());
+		if (array.isArray()) {
+			return new Evaluator((double) array.getArray().size());
+		}
+		throw new RuntimeException(ctx.Variable().getText() + " is not an array.");
+	}
+
+	/**
+	 * Returns the length of array
+	 */
+	public Evaluator visitArrayLength(ComS319LanguageParser.ArrayLengthContext ctx) {
+		Evaluator value = env.getVar(ctx.length().Variable().getText());
+		if (value.isArray()) {
+			return new Evaluator((double) value.getArray().size());
+		}
+		throw new RuntimeException(ctx.length().Variable().getText() + " is not an array.");
+	}
+
+	public Evaluator visitFloorExpr(ComS319LanguageParser.FloorExprContext ctx) {
+		Evaluator value = visit(ctx.expr());
+		if (value.isNumber()) {
+			return new Evaluator(Math.floor(value.getNumber()));
+		}
+		throw new RuntimeException(ctx.expr().getText() + " is not type number.");
+	}
+
+	public Evaluator visitArrayExpr(ComS319LanguageParser.ArrayExprContext ctx) {
+		return visit(ctx.arrayDec());
 	}
 }

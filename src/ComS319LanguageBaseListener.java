@@ -135,6 +135,18 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterArrayExpr(ComS319LanguageParser.ArrayExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayExpr(ComS319LanguageParser.ArrayExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterModExpr(ComS319LanguageParser.ModExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -154,6 +166,18 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitIncExpr(ComS319LanguageParser.IncExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFloorExpr(ComS319LanguageParser.FloorExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFloorExpr(ComS319LanguageParser.FloorExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -238,6 +262,18 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitVarIncExpr(ComS319LanguageParser.VarIncExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayLength(ComS319LanguageParser.ArrayLengthContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayLength(ComS319LanguageParser.ArrayLengthContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -579,6 +615,18 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLength(ComS319LanguageParser.LengthContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLength(ComS319LanguageParser.LengthContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterWhileLoop(ComS319LanguageParser.WhileLoopContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -646,6 +694,42 @@ public class ComS319LanguageBaseListener implements ComS319LanguageListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitFuncReturn(ComS319LanguageParser.FuncReturnContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterImportStatment(ComS319LanguageParser.ImportStatmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitImportStatment(ComS319LanguageParser.ImportStatmentContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayDec(ComS319LanguageParser.ArrayDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayDec(ComS319LanguageParser.ArrayDecContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArrayIndex(ComS319LanguageParser.ArrayIndexContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

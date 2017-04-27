@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 /**
  * Stores the values of Language statments. types include booleans, numbers, and
  * strings.
@@ -15,6 +17,8 @@ public class Evaluator {
 			type = Type.NUMBER;
 		} else if (var instanceof String) {
 			type = Type.STRING;
+		} else if (var instanceof ArrayList) {
+			type = Type.ARRAY;
 		}
 	}
 
@@ -31,6 +35,14 @@ public class Evaluator {
 		return (String) var;
 	}
 
+	public ArrayList<Evaluator> getArray() {
+		return (ArrayList<Evaluator>) var;
+	}
+
+	public Evaluator getArrayIndex(int i) {
+		return ((ArrayList<Evaluator>) var).get(i);
+	}
+
 	public Object getObject() {
 		return var;
 	}
@@ -45,6 +57,10 @@ public class Evaluator {
 
 	public boolean isString() {
 		return type == Type.STRING;
+	}
+
+	public boolean isArray() {
+		return type == Type.ARRAY;
 	}
 
 	public Type getType() {

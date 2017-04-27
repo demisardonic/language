@@ -3,7 +3,7 @@
  *
  */
 public enum Type {
-	NUMBER("number"), BOOL("boolean"), STRING("string");
+	NUMBER("number"), BOOL("boolean"), STRING("string"), ARRAY("array");
 
 	private final String n;
 

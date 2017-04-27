@@ -1,13 +1,7 @@
-func fibb(n) do
-	if n == 0 do
-		return 0;
-	else if n == 1 do
-		return 1;
-	else do
-		return fibb(n-2) + fibb(n-1);
-	end
-end
+import "examples/libs/numlib.319";
 
 func main() do
-	print biff2();
+	print floor(4.5);
+	print ceil(4.5);
 end
+

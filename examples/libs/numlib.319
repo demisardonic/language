@@ -1,0 +1,10 @@
+func ceil(n) do
+	return floor(n) + 1;
+end
+
+func pow(n m)do
+	val = floor(n);
+	for i = 0; i < m-1; i++ do
+		val = val * val; 
+	end
+end

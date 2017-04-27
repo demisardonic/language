@@ -1,7 +1,7 @@
 grammar ComS319Language;
 
 program
- : funcDef+
+ : importStatment* funcDef+
  ;
 
 code:
@@ -135,6 +135,10 @@ funcReturn:
 	| Return stringExpr
 	;
 	
+importStatment:
+	Import Path ';'
+	;
+	
 If : 'if';
 Else : 'else';
 Do : 'do';
@@ -144,6 +148,7 @@ While : 'while';
 For : 'for';
 Func : 'func';
 Return : 'return';
+Import : 'import';
 
 OR : '||';
 AND : '&&';
@@ -176,6 +181,14 @@ Number
 
 Variable
  : [a-zA-Z_] [a-zA-Z_0-9]*
+ ;
+ 
+PathPart
+	: Variable | ('/'PathPart)
+	;
+ 
+Path
+ : '"' Variable ('/'PathPart)* '.319' '"'
  ;
 
 String
