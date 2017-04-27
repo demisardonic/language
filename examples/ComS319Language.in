@@ -1,0 +1,14 @@
+func fibb(n) do
+	if n == 0 do
+		i = 0;
+	else if n == 1 do
+		i = 1;
+	else do
+		i = fibb(n-2) + fibb(n-1);
+	end
+	return i;
+end
+
+for i = 0; i < 10; i++do
+	print fibb(i);
+end

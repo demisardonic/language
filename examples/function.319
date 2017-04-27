@@ -1,3 +1,13 @@
+func ret(n) do
+	return n;
+end
+
+print ret(ret(4));
+
+func add(a b) do
+	return a + b;
+end
+
 func fibb(n) do
 	if n == 0 do
 		return 0;
