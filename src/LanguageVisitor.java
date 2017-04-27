@@ -18,6 +18,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitProgram(ComS319LanguageParser.ProgramContext ctx) {
+		LanguageMain.instCount = 0;
 		return visitChildren(ctx);
 	}
 
@@ -34,9 +35,9 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitStatement(ComS319LanguageParser.StatementContext ctx) {
+		LanguageMain.instCount++;
 		try {
 			Evaluator val = visit(ctx.getChild(0));
-
 			return val;
 		} catch (RuntimeException e) {
 			System.err.println("Error on statement: " + ctx.getText() + " : " + e.getMessage());
@@ -71,7 +72,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		for (int i = 0; i < ctx.elseIfPart().size(); i++) {
 			value = visit(ctx.elseIfPart(i).boolExpr());
 			if (value.isBool() && value.getBool()) {
-				
+
 				return visit(ctx.elseIfPart(i));
 			}
 		}
@@ -113,8 +114,12 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		Evaluator op2 = visit(ctx.expr(1));
 		if (op1.isNumber() && op2.isNumber()) {
 			return new Evaluator(op1.getNumber() + op2.getNumber());
-		} else {
-			throw new RuntimeException("Addition must be type number+number, not type " + op1.getType() + "+" + op2.getType());
+		} else if (op1.isString() && op2.isNumber()) {
+			return new Evaluator(op1.getString() + op2.getNumber());
+		} else if (op1.isNumber() && op2.isString()) {
+			return new Evaluator(op1.getNumber() + op2.getString());
+		}else {
+			throw new RuntimeException("Addition cannot be done between type " + op1.getType() + " and " + op2.getType());
 		}
 	}
 

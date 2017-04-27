@@ -2,7 +2,6 @@
 public class Evaluator {
 	private Object var;
 	private Type type;
-	private boolean isReturn;
 
 	public Evaluator(Object var) {
 		this.var = var;
@@ -13,7 +12,6 @@ public class Evaluator {
 		} else if (var instanceof String) {
 			type = Type.STRING;
 		}
-		isReturn = false;
 	}
 
 	public boolean getBool() {
@@ -47,13 +45,5 @@ public class Evaluator {
 
 	public Type getType() {
 		return type;
-	}
-
-	public boolean isReturn() {
-		return isReturn;
-	}
-
-	public void setReturn(boolean isReturn) {
-		this.isReturn = isReturn;
 	}
 }

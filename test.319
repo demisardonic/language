@@ -1,14 +1,2 @@
-func fibb(n) do
-	if n == 0 do
-		return 0;
-	else if n == 1 do
-		return 1;
-	else do
-		return fibb(n-2) + fibb(n-1);
-	end
-end
-
-for i = 0; i < 10; i++ do
-	print fibb(i);
-end
-
+string = "hello";
+print string;
