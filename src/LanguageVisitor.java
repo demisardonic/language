@@ -1,25 +1,31 @@
 
 import java.util.ArrayList;
 
+import javax.management.RuntimeErrorException;
+
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> implements ComS319LanguageVisitor<Evaluator> {
 
-	private Environment env;
+	private Program env;
 
-	public LanguageVisitor(Environment env) {
+	public LanguageVisitor(Program env) {
 		this.env = env;
 	}
 
 	public LanguageVisitor() {
-		this(new Environment());
+		this(new Program());
 	}
 
 	@Override
 	public Evaluator visitProgram(ComS319LanguageParser.ProgramContext ctx) {
 		LanguageMain.instCount = 0;
-		return visitChildren(ctx);
+		visitChildren(ctx);
+		if (env.getMain() == null) {
+			throw new RuntimeException("Program is missing a main function.");
+		}
+		return env.getMain().visit(this);
 	}
 
 	@Override
@@ -41,7 +47,6 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			return val;
 		} catch (RuntimeException e) {
 			System.err.println("Error on statement: " + ctx.getText() + " : " + e.getMessage());
-			e.printStackTrace();
 		}
 		return null;
 	}
@@ -118,7 +123,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 			return new Evaluator(op1.getString() + op2.getNumber());
 		} else if (op1.isNumber() && op2.isString()) {
 			return new Evaluator(op1.getNumber() + op2.getString());
-		}else {
+		} else {
 			throw new RuntimeException("Addition cannot be done between type " + op1.getType() + " and " + op2.getType());
 		}
 	}
@@ -352,18 +357,27 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitVarExpr(ComS319LanguageParser.VarExprContext ctx) {
 		Evaluator value = env.getVar(ctx.getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		return value;
 	}
 
 	@Override
 	public Evaluator visitVarBoolExpr(ComS319LanguageParser.VarBoolExprContext ctx) {
 		Evaluator value = env.getVar(ctx.getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		return value;
 	}
 
 	@Override
 	public Evaluator visitVarStringExpr(ComS319LanguageParser.VarStringExprContext ctx) {
 		Evaluator value = env.getVar(ctx.getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		return value;
 	}
 
@@ -420,6 +434,9 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitVarInc(ComS319LanguageParser.VarIncContext ctx) {
 		Evaluator value = env.getVar(ctx.Variable().getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		if (value.isNumber()) {
 			value = new Evaluator(value.getNumber() + 1);
 			env.setVar(ctx.Variable().getText(), value);
@@ -432,6 +449,9 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitVarDec(ComS319LanguageParser.VarDecContext ctx) {
 		Evaluator value = env.getVar(ctx.Variable().getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		if (value.isNumber()) {
 			value = new Evaluator(value.getNumber() - 1);
 			env.setVar(ctx.Variable().getText(), value);
@@ -444,6 +464,9 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitVarIncExpr(ComS319LanguageParser.VarIncExprContext ctx) {
 		Evaluator value = env.getVar(ctx.varInc().Variable().getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		if (value.isNumber()) {
 			value = new Evaluator(value.getNumber() + 1);
 			env.setVar(ctx.varInc().Variable().getText(), value);
@@ -456,6 +479,9 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitVarDecExpr(ComS319LanguageParser.VarDecExprContext ctx) {
 		Evaluator value = env.getVar(ctx.varDec().Variable().getText());
+		if (value == null) {
+			throw new RuntimeException("Variable \"" + ctx.getText() + "\" does not exist");
+		}
 		if (value.isNumber()) {
 			value = new Evaluator(value.getNumber() - 1);
 			env.setVar(ctx.varDec().Variable().getText(), value);
@@ -468,6 +494,13 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 	@Override
 	public Evaluator visitFuncDef(ComS319LanguageParser.FuncDefContext ctx) {
 		String functionName = ctx.Variable().getText();
+		if (functionName.equals("main")) {
+			if (ctx.param().size() != 0) {
+				throw new RuntimeException("Main function must have no parameters.");
+			}
+			env.setMain(new Function(ctx.code(), new ArrayList<String>()));
+			return null;
+		}
 		ArrayList<String> paramNames = new ArrayList<String>();
 		for (int i = 0; i < ctx.param().size(); i++) {
 			paramNames.add(ctx.param(i).getText());
@@ -478,14 +511,16 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitFuncApply(ComS319LanguageParser.FuncApplyContext ctx) {
-		Environment funcEnv = new Environment(env);
+		Program funcEnv = new Program(env);
 		LanguageVisitor funcVisitor = new LanguageVisitor(funcEnv);
 		String funcName = ctx.Variable().getText();
 		Function f = env.getFunc(funcName);
+		if (f == null) {
+			throw new RuntimeException("Function \"" + funcName + "\" does not exist.");
+		}
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.param(i)));
-			// funcVisitor.visit(ctx.param(i));
 		}
 		f.visit(funcVisitor);
 		return null;
@@ -507,10 +542,13 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitApplyFunc(ComS319LanguageParser.ApplyFuncContext ctx) {
-		Environment funcEnv = new Environment(env);
+		Program funcEnv = new Program(env);
 		LanguageVisitor funcVisitor = new LanguageVisitor(funcEnv);
 		String funcName = ctx.funcApply().Variable().getText();
 		Function f = env.getFunc(funcName);
+		if (f == null) {
+			throw new RuntimeException("Function \"" + funcName + "\" does not exist.");
+		}
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.funcApply().param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.funcApply().param(i)));
@@ -520,10 +558,13 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitApplyBoolFunc(ComS319LanguageParser.ApplyBoolFuncContext ctx) {
-		Environment funcEnv = new Environment(env);
+		Program funcEnv = new Program(env);
 		LanguageVisitor funcVisitor = new LanguageVisitor(funcEnv);
 		String funcName = ctx.funcApply().Variable().getText();
 		Function f = env.getFunc(funcName);
+		if (f == null) {
+			throw new RuntimeException("Function \"" + funcName + "\" does not exist.");
+		}
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.funcApply().param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.funcApply().param(i)));
@@ -534,10 +575,13 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 
 	@Override
 	public Evaluator visitApplyStringFunc(ComS319LanguageParser.ApplyStringFuncContext ctx) {
-		Environment funcEnv = new Environment(env);
+		Program funcEnv = new Program(env);
 		LanguageVisitor funcVisitor = new LanguageVisitor(funcEnv);
 		String funcName = ctx.funcApply().Variable().getText();
 		Function f = env.getFunc(funcName);
+		if (f == null) {
+			throw new RuntimeException("Function \"" + funcName + "\" does not exist.");
+		}
 		ArrayList<String> paramNames = f.getParamNames();
 		for (int i = 0; i < ctx.funcApply().param().size(); i++) {
 			funcEnv.setVar(paramNames.get(i), funcVisitor.visit(ctx.funcApply().param(i)));

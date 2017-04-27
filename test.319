@@ -8,7 +8,6 @@ func fibb(n) do
 	end
 end
 
-for i = 0; i < 30; i++ do
-	print fibb(i);
+func main() do
+	print biff2();
 end
-

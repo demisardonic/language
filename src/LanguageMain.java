@@ -27,18 +27,27 @@ public class LanguageMain {
 				ComS319LanguageLexer lexer = new ComS319LanguageLexer(input);
 				CommonTokenStream tokens = new CommonTokenStream(lexer);
 				ComS319LanguageParser parser = new ComS319LanguageParser(tokens);
-
-				System.out.println("############Program Output############");
-
 				long startTime = System.currentTimeMillis();
+				Evaluator mainReturn = null;
 
-				LanguageVisitor visit = new LanguageVisitor();
-				Evaluator mainReturn = visit.visit(parser.program());
-
+				System.out.println("\n############Program Output############");
+				startTime = System.currentTimeMillis();
+				try {
+					LanguageVisitor visit = new LanguageVisitor();
+					mainReturn = visit.visit(parser.program());
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+					System.out.println("######################################\n");
+					System.out.printf("Program Returned: -1\n");
+					System.out.printf("Program Execution Time: %.6fs\n", (System.currentTimeMillis() - startTime) * 0.001);
+					System.out.printf("Program Instruction Count: %d\n", instCount);
+				}
 				long execTime = System.currentTimeMillis() - startTime;
 				System.out.println("######################################\n");
 				if (mainReturn != null) {
-					System.out.printf("Program Returned: " + mainReturn.getObject() + "\n");
+					System.out.printf("Program Returned: " + (int) mainReturn.getNumber() + "\n");
+				} else {
+					System.out.printf("Program Returned: 0\n");
 				}
 				System.out.printf("Program Execution Time: %.6fs\n", execTime * 0.001);
 				System.out.printf("Program Instruction Count: %d\n", instCount);
@@ -46,7 +55,7 @@ public class LanguageMain {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("Enter path to source file now. Enter \"exit\" to terminate.");
+			System.out.println("\nEnter path to source file now. Enter \"exit\" to terminate.");
 			path = scanner.nextLine();
 			if (path.equals("exit")) {
 				repeat = false;
