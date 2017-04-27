@@ -12,6 +12,8 @@ Usage:
 >**provided jar**: java -jar ComS319Portfolio3.jar  
   
 >Run program in terminal or command prompt. Enter path to source file to excecute the main function of that file.
+
+
 ###### Language Syntax:  
 ##### Variables: 
 ``` 
