@@ -1,7 +1,0 @@
-import "examples/libs/numlib.319";
-
-func main() do
-	print floor(4.5);
-	print ceil(4.5);
-end
-
