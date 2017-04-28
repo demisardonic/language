@@ -10,28 +10,29 @@ code:
 
 statement
 	: assignment ';'
+	| print ';'
 	| funcReturn ';'
 	| funcApply ';'
 	| varInc ';'
 	| varDec ';'
 	| ifPartement
-	| print ';'
 	| whileLoop
 	| forLoop
 	;
 
 assignment
-	: Variable '=' expr
+	:  Variable '=' arrayDec
+	| Variable '=' expr
 	| Variable '=' stringExpr
 	| Variable '=' boolExpr
 	;
 	
 varInc:
-	Variable INC
+	Variable arrayIndex? INC
 	;
 	
 varDec:
-	Variable DEC
+	Variable arrayIndex? DEC
 	;
 
 ifPartement
@@ -51,7 +52,9 @@ elsePart
 	;
 
 expr
-	: SUB expr #negExpr
+	: length #arrayLength
+	| 'floor' '(' expr ')' #floorExpr
+	| SUB expr #negExpr
 	| expr MULT expr #multExpr
 	| expr DIV expr #divExpr
 	| expr MOD expr #modExpr
@@ -61,9 +64,10 @@ expr
 	| varDec #varDecExpr
 	| expr INC #incExpr
 	| expr DEC # decExpr
+	| arrayDec #arrayExpr
 	| Number #numExpr
 	| '('expr')' #innerExpr
-	| Variable #varExpr
+	| Variable arrayIndex? #varExpr
 	| funcApply #applyFunc
 	;
 
@@ -76,7 +80,7 @@ boolExpr :
 	| NOT boolExpr #notBoolExpr
 	| '(' boolExpr ')' #innerBoolExpr
 	| relationExpr #relBoolExpr
-	| Variable #varBoolExpr
+	| Variable arrayIndex? #varBoolExpr
 	| funcApply #applyBoolFunc
 	;
 
@@ -94,7 +98,7 @@ stringExpr :
 	String #string
 	| stringExpr ADD stringExpr #stringAdd
 	| stringExpr ADD expr #stringAddExpr
-	| Variable #varStringExpr
+	| Variable arrayIndex? #varStringExpr
 	| funcApply #applyStringFunc
 	;
 	
@@ -102,6 +106,10 @@ print:
 	Print expr 
 	| Print boolExpr 
 	| Print stringExpr 
+	;
+	
+length:
+	Length '(' Variable ')'
 	;
 	
 whileLoop:
@@ -139,11 +147,20 @@ importStatment:
 	Import Path ';'
 	;
 	
+arrayDec:
+	'[' (((expr|boolExpr|stringExpr) ',')* (expr|boolExpr|stringExpr) )? ']'
+	;
+	
+arrayIndex:
+	'[' expr ']'
+	;
+	
 If : 'if';
 Else : 'else';
 Do : 'do';
 End : 'end';
 Print : 'print';
+Length : 'length';
 While : 'while';
 For : 'for';
 Func : 'func';
