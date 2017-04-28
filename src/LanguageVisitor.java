@@ -792,7 +792,7 @@ public class LanguageVisitor extends AbstractParseTreeVisitor<Evaluator> impleme
 		if (env.addImport(path)) {
 			ANTLRInputStream input;
 			try {
-				input = new ANTLRInputStream(new FileInputStream(path.substring(1, path.length() - 1)));
+				input = new ANTLRInputStream(new FileInputStream(LanguageMain.relativePath + path.substring(1, path.length() - 1)));
 			} catch (IOException e) {
 				throw new RuntimeException("Import path " + path + " does not exist.");
 			}

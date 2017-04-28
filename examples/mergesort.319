@@ -1,4 +1,4 @@
-import "examples/libs/arraylib.319";
+import "libs/arraylib.319";
 
 func main() do
 	print "array n";

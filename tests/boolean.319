@@ -1,9 +1,0 @@
-print true && false;
-print false || true;
-print !true;
-print true == false;
-print false != true;
-
-print "";
-print 1>2;
-print 1.5==1.5;

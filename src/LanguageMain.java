@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 public class LanguageMain {
 
 	public static int instCount = 0;
+	public static String relativePath;
 
 	public static void main(String[] args) {
 		String path;
@@ -19,6 +20,13 @@ public class LanguageMain {
 		path = scanner.nextLine();
 		if (path.equals("exit")) {
 			repeat = false;
+		}
+		// Store relative path of the program so that import statements can
+		// locate source files
+		String[] parts = path.split("/");
+		relativePath = "";
+		for (int i = 0; i < parts.length - 1; i++) {
+			relativePath += parts[i] + "/";
 		}
 		ANTLRInputStream input;
 		while (repeat) {
@@ -31,14 +39,14 @@ public class LanguageMain {
 				ComS319LanguageParser parser = new ComS319LanguageParser(tokens);
 				long startTime;
 				Evaluator mainReturn = null;
-
 				System.out.println("\n############Program Output############");
 				startTime = System.currentTimeMillis();
 				try {
 					// Creates new visitor to walk through the program. Visitor
 					// holds new empty program environment.
 					LanguageVisitor visit = new LanguageVisitor();
-					//Begins execution of the program and stores the result of the main function if applicable.
+					// Begins execution of the program and stores the result of
+					// the main function if applicable.
 					mainReturn = visit.visit(parser.program());
 				} catch (Exception e) {
 					System.err.println(e.getMessage());
@@ -62,6 +70,11 @@ public class LanguageMain {
 			}
 			System.out.println("\nEnter path to source file now. Enter \"exit\" to terminate.");
 			path = scanner.nextLine();
+			parts = path.split("/");
+			relativePath = "";
+			for (int i = 0; i < parts.length - 1; i++) {
+				relativePath += parts[i] + "/";
+			}
 			if (path.equals("exit")) {
 				repeat = false;
 			}
