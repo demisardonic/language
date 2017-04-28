@@ -53,7 +53,7 @@ while i<10 do
     loop body
 end
 ```
-##### Default Functions:
+##### Builtin Functions:
 ```
 print x;
 length(list);
