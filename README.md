@@ -4,7 +4,7 @@
 Requires: antlr-4.6-complete.jar [www.antlr.org](http://www.antlr.org/download.html).  
   
 Compile:   
-> Windows: javac -cp antlr-4.6-complete.jar *.jar  
+> Windows: javac -cp antlr-4.6-complete.jar *.java   
   
 Usage:  
 >**cmd**: java -cp antlr-4.6-complete.jar.; LanguageMain  
